@@ -38,9 +38,9 @@ const getValue = (obj: { [x: string]: string[] }) =>
     .map(key => obj[key])
     .join(',');
 
-type IStatusMapType = 'default' | 'processing' | 'success' | 'error';
-const statusMap = ['default', 'processing', 'success', 'error'];
-const status = ['关闭', '运行中', '已上线', '异常'];
+// type IStatusMapType = 'default' | 'processing' | 'success' | 'error';
+// const statusMap = ['default', 'processing', 'success', 'error'];
+// const status = ['关闭', '运行中', '已上线', '异常'];
 
 interface TableListProps extends FormComponentProps {
   dispatch: Dispatch<
@@ -58,8 +58,6 @@ interface TableListProps extends FormComponentProps {
 interface TableListState {
   modalVisible: boolean;
   updateModalVisible: boolean;
-  expandForm: boolean;
-  selectedRows: TableListItem[];
   formValues: { [key: string]: string };
   stepFormValues: Partial<TableListItem>;
 }
@@ -85,8 +83,6 @@ class TableList extends Component<TableListProps, TableListState> {
   state: TableListState = {
     modalVisible: false,
     updateModalVisible: false,
-    expandForm: false,
-    selectedRows: [],
     formValues: {},
     stepFormValues: {},
   };
@@ -101,74 +97,50 @@ class TableList extends Component<TableListProps, TableListState> {
       dataIndex: 'model',
     },
     {
-      title: '品牌',
-      dataIndex: 'brand',
-    },
-    {
       title: '平台',
       dataIndex: 'platform',
     },
-    {
-      title: '系统版本',
-      dataIndex: 'os',
-    },
-    {
-      title: '尺寸',
-      dataIndex: 'size',
-    },
-    {
-      title: '分辨率',
-      dataIndex: 'resolution',
-    },
-    {
-      title: '运行内存',
-      dataIndex: 'ram',
-    },
-    {
-      title: '存储空间',
-      dataIndex: 'rom',
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      filters: [
-        {
-          text: status[0],
-          value: '0',
-        },
-        {
-          text: status[1],
-          value: '1',
-        },
-        {
-          text: status[2],
-          value: '2',
-        },
-        {
-          text: status[3],
-          value: '3',
-        },
-      ],
-      render(val: IStatusMapType) {
-        return <Badge status={statusMap[val]} text={status[val]} />;
-      },
-    },
+    // {
+    //   title: '状态',
+    //   dataIndex: 'status',
+    //   filters: [
+    //     {
+    //       text: status[0],
+    //       value: '0',
+    //     },
+    //     {
+    //       text: status[1],
+    //       value: '1',
+    //     },
+    //     {
+    //       text: status[2],
+    //       value: '2',
+    //     },
+    //     {
+    //       text: status[3],
+    //       value: '3',
+    //     },
+    //   ],
+    //   render(val: IStatusMapType) {
+    //     return <Badge status={statusMap[val]} text={status[val]} />;
+    //   },
+    // },
     {
       title: '上次借出时间',
-      dataIndex: 'updatedAt',
+      dataIndex: 'update_time',
       sorter: true,
       render: (val: string) => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
-    {
-      title: '操作',
-      render: (text, record) => (
-        <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a>
-          <Divider type="vertical" />
-          <a href="">订阅警报</a>
-        </Fragment>
-      ),
-    },
+    // {
+    //   title: '操作',
+    //   render: (text, record) => (
+    //     <Fragment>
+    //       <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a>
+    //       <Divider type="vertical" />
+    //       <a href="">订阅警报</a>
+    //     </Fragment>
+    //   ),
+    // },
   ];
 
   componentDidMount() {
@@ -178,35 +150,35 @@ class TableList extends Component<TableListProps, TableListState> {
     });
   }
 
-  handleStandardTableChange = (
-    pagination: Partial<TableListPagination>,
-    filtersArg: Record<keyof TableListItem, string[]>,
-    sorter: SorterResult<TableListItem>,
-  ) => {
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
+  // handleStandardTableChange = (
+  //   pagination: Partial<TableListPagination>,
+  //   filtersArg: Record<keyof TableListItem, string[]>,
+  //   sorter: SorterResult<TableListItem>,
+  // ) => {
+  //   const { dispatch } = this.props;
+  //   const { formValues } = this.state;
 
-    const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = { ...obj };
-      newObj[key] = getValue(filtersArg[key]);
-      return newObj;
-    }, {});
+  //   const filters = Object.keys(filtersArg).reduce((obj, key) => {
+  //     const newObj = { ...obj };
+  //     newObj[key] = getValue(filtersArg[key]);
+  //     return newObj;
+  //   }, {});
 
-    const params: Partial<TableListParams> = {
-      currentPage: pagination.current,
-      pageSize: pagination.pageSize,
-      ...formValues,
-      ...filters,
-    };
-    if (sorter.field) {
-      params.sorter = `${sorter.field}_${sorter.order}`;
-    }
+  //   const params: Partial<TableListParams> = {
+  //     currentPage: pagination.current,
+  //     pageSize: pagination.pageSize,
+  //     ...formValues,
+  //     ...filters,
+  //   };
+  //   if (sorter.field) {
+  //     params.sorter = `${sorter.field}_${sorter.order}`;
+  //   }
 
-    dispatch({
-      type: 'deviceAnddevicelist/fetch',
-      payload: params,
-    });
-  };
+  //   dispatch({
+  //     type: 'deviceAnddevicelist/fetch',
+  //     payload: params,
+  //   });
+  // };
 
   handleFormReset = () => {
     const { form, dispatch } = this.props;
@@ -220,72 +192,72 @@ class TableList extends Component<TableListProps, TableListState> {
     });
   };
 
-  handleMenuClick = (e: { key: string }) => {
-    const { dispatch } = this.props;
-    const { selectedRows } = this.state;
+  // handleMenuClick = (e: { key: string }) => {
+  //   const { dispatch } = this.props;
+  //   const { selectedRows } = this.state;
 
-    if (!selectedRows) return;
-    switch (e.key) {
-      case 'remove':
-        dispatch({
-          type: 'deviceAnddevicelist/remove',
-          payload: {
-            key: selectedRows.map(row => row.key),
-          },
-          callback: () => {
-            this.setState({
-              selectedRows: [],
-            });
-          },
-        });
-        break;
-      default:
-        break;
-    }
-  };
+  //   if (!selectedRows) return;
+  //   switch (e.key) {
+  //     case 'remove':
+  //       dispatch({
+  //         type: 'deviceAnddevicelist/remove',
+  //         payload: {
+  //           key: selectedRows.map(row => row.key),
+  //         },
+  //         callback: () => {
+  //           this.setState({
+  //             selectedRows: [],
+  //           });
+  //         },
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
-  handleSelectRows = (rows: TableListItem[]) => {
-    this.setState({
-      selectedRows: rows,
-    });
-  };
+  // handleSelectRows = (rows: TableListItem[]) => {
+  //   this.setState({
+  //     selectedRows: rows,
+  //   });
+  // };
 
-  handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  // handleSearch = (e: React.FormEvent) => {
+  //   e.preventDefault();
 
-    const { dispatch, form } = this.props;
+  //   const { dispatch, form } = this.props;
 
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
+  //   form.validateFields((err, fieldsValue) => {
+  //     if (err) return;
 
-      const values = {
-        ...fieldsValue,
-        updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
-      };
+  //     const values = {
+  //       ...fieldsValue,
+  //       updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
+  //     };
 
-      this.setState({
-        formValues: values,
-      });
+  //     this.setState({
+  //       formValues: values,
+  //     });
 
-      dispatch({
-        type: 'deviceAnddevicelist/fetch',
-        payload: values,
-      });
-    });
-  };
+  //     dispatch({
+  //       type: 'deviceAnddevicelist/fetch',
+  //       payload: values,
+  //     });
+  //   });
+  // };
 
-  handleModalVisible = (flag?: boolean) => {
-    this.setState({
-      modalVisible: !!flag,
-    });
-  };
+  // handleModalVisible = (flag?: boolean) => {
+  //   this.setState({
+  //     modalVisible: !!flag,
+  //   });
+  // };
 
-  handleUpdateModalVisible = (flag?: boolean, record?: FormValueType) => {
-    this.setState({
-      updateModalVisible: !!flag,
-      stepFormValues: record || {},
-    });
-  };
+  // handleUpdateModalVisible = (flag?: boolean, record?: FormValueType) => {
+  //   this.setState({
+  //     updateModalVisible: !!flag,
+  //     stepFormValues: record || {},
+  //   });
+  // };
 
 
   // handleUpdate = (fields: FormValueType) => {
@@ -308,7 +280,7 @@ class TableList extends Component<TableListProps, TableListState> {
       form: { getFieldDecorator },
     } = this.props;
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
+      <Form layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="规则名称">
@@ -385,54 +357,35 @@ class TableList extends Component<TableListProps, TableListState> {
       loading,
     } = this.props;
 
-    const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
-    const menu = (
-      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-        <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">批量审批</Menu.Item>
-      </Menu>
-    );
+    // const { modalVisible, updateModalVisible } = this.state;
 
-    const parentMethods = {
-      handleModalVisible: this.handleModalVisible,
-    };
-    const updateMethods = {
-      handleUpdateModalVisible: this.handleUpdateModalVisible,
-    };
+    // const parentMethods = {
+    //   handleModalVisible: this.handleModalVisible,
+    // };
+    // const updateMethods = {
+    //   handleUpdateModalVisible: this.handleUpdateModalVisible,
+    // };
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              {selectedRows.length > 0 && (
-                <span>
-                  <Button>批量操作</Button>
-                  <Dropdown overlay={menu}>
-                    <Button>
-                      更多操作 <Icon type="down" />
-                    </Button>
-                  </Dropdown>
-                </span>
-              )}
-            </div>
             <StandardTable
-              selectedRows={selectedRows}
               loading={loading}
               data={data}
               columns={this.columns}
-              onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
+              // onSelectRow={this.handleSelectRows}
+              // onChange={this.handleStandardTableChange}
             />
           </div>
         </Card>
-        {stepFormValues && Object.keys(stepFormValues).length ? (
+        {/* {stepFormValues && Object.keys(stepFormValues).length ? (
           <UpdateForm
             {...updateMethods}
             updateModalVisible={updateModalVisible}
             values={stepFormValues}
           />
-        ) : null}
+        ) : null} */}
       </PageHeaderWrapper>
     );
   }

@@ -2,14 +2,7 @@ export interface TableListItem {
   key: number;
   name: string;
   model: string;
-  brand: string;
   platform: string;
-  os: string;
-  size: string;
-  resolution: string;
-  ram: string;
-  rom: string;
-  status: number;
   updatedAt: Date;
   createdAt: Date;
 }

@@ -1,8 +1,13 @@
 import request from '@/utils/request';
 import { TableListParams } from './data.d';
 
+// export async function queryRule(params: TableListParams) {
+//   return request('http://localhost:5000/api/v1/devices', {
+//     params,
+//   });
+// }
 export async function queryRule(params: TableListParams) {
-  return request('/api/rule', {
+  return request('/api/v1/devices', {
     params,
   });
 }
