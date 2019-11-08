@@ -127,7 +127,7 @@ class TableList extends Component<TableListProps, TableListState> {
     // },
     {
       title: '上次借出时间',
-      dataIndex: 'update_time',
+      dataIndex: 'updatedAt',
       sorter: true,
       render: (val: string) => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
@@ -150,35 +150,35 @@ class TableList extends Component<TableListProps, TableListState> {
     });
   }
 
-  // handleStandardTableChange = (
-  //   pagination: Partial<TableListPagination>,
-  //   filtersArg: Record<keyof TableListItem, string[]>,
-  //   sorter: SorterResult<TableListItem>,
-  // ) => {
-  //   const { dispatch } = this.props;
-  //   const { formValues } = this.state;
+  handleStandardTableChange = (
+    pagination: Partial<TableListPagination>,
+    filtersArg: Record<keyof TableListItem, string[]>,
+    sorter: SorterResult<TableListItem>,
+  ) => {
+    const { dispatch } = this.props;
+    const { formValues } = this.state;
 
-  //   const filters = Object.keys(filtersArg).reduce((obj, key) => {
-  //     const newObj = { ...obj };
-  //     newObj[key] = getValue(filtersArg[key]);
-  //     return newObj;
-  //   }, {});
+    const filters = Object.keys(filtersArg).reduce((obj, key) => {
+      const newObj = { ...obj };
+      newObj[key] = getValue(filtersArg[key]);
+      return newObj;
+    }, {});
 
-  //   const params: Partial<TableListParams> = {
-  //     currentPage: pagination.current,
-  //     pageSize: pagination.pageSize,
-  //     ...formValues,
-  //     ...filters,
-  //   };
-  //   if (sorter.field) {
-  //     params.sorter = `${sorter.field}_${sorter.order}`;
-  //   }
+    const params: Partial<TableListParams> = {
+      currentPage: pagination.current,
+      pageSize: pagination.pageSize,
+      ...formValues,
+      ...filters,
+    };
+    if (sorter.field) {
+      params.sorter = `${sorter.field}_${sorter.order}`;
+    }
 
-  //   dispatch({
-  //     type: 'deviceAnddevicelist/fetch',
-  //     payload: params,
-  //   });
-  // };
+    dispatch({
+      type: 'deviceAnddevicelist/fetch',
+      payload: params,
+    });
+  };
 
   handleFormReset = () => {
     const { form, dispatch } = this.props;
@@ -375,7 +375,7 @@ class TableList extends Component<TableListProps, TableListState> {
               data={data}
               columns={this.columns}
               // onSelectRow={this.handleSelectRows}
-              // onChange={this.handleStandardTableChange}
+              onChange={this.handleStandardTableChange}
             />
           </div>
         </Card>
