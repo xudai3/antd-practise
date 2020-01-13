@@ -102,7 +102,6 @@ export default {
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
           routes: [
             {
               path: '/',
@@ -113,12 +112,14 @@ export default {
               name: 'welcome',
               icon: 'smile',
               component: './Welcome',
+              authority: ['admin', 'user'],
             },
             {
+              path: '/device/devicelist',
               name: 'devicelist',
               icon: 'smile',
-              path: '/device/devicelist',
               component: './device/devicelist',
+              authority: ['admin'],
             },
             {
               component: './404',
