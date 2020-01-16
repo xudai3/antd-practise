@@ -105,21 +105,20 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
+              redirect: '/device/devicelist',
             },
             {
               path: '/welcome',
               name: 'welcome',
               icon: 'smile',
               component: './Welcome',
-              authority: ['admin', 'user'],
             },
             {
               path: '/device/devicelist',
               name: 'devicelist',
               icon: 'smile',
               component: './device/devicelist',
-              authority: ['admin'],
+              authority: ['user'],
             },
             {
               component: './404',
